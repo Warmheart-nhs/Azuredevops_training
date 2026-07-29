@@ -1,0 +1,1667 @@
+{
+  "datasets": [
+    {
+      "name": "ds_exec_summary",
+      "displayName": "Executive Summary",
+      "queryLines": [
+        "SELECT * FROM finops.executive_summary"
+      ]
+    },
+    {
+      "name": "ds_cost_trend",
+      "displayName": "Cost Trend",
+      "queryLines": [
+        "SELECT * FROM finops.cost_trend ORDER BY usage_date"
+      ]
+    },
+    {
+      "name": "ds_monthly_cost",
+      "displayName": "Monthly Cost",
+      "queryLines": [
+        "SELECT * FROM finops.monthly_cost ORDER BY usage_year, usage_month"
+      ]
+    },
+    {
+      "name": "ds_budget_vs_actual",
+      "displayName": "Budget vs Actual",
+      "queryLines": [
+        "SELECT * FROM finops.budget_vs_actual ORDER BY budget_month DESC"
+      ]
+    },
+    {
+      "name": "ds_top10_pipelines",
+      "displayName": "Top 10 Pipelines",
+      "queryLines": [
+        "SELECT * FROM finops.top10_pipelines"
+      ]
+    },
+    {
+      "name": "ds_pipeline_daily_cost",
+      "displayName": "Pipeline Daily Cost",
+      "queryLines": [
+        "SELECT * FROM finops.pipeline_daily_cost ORDER BY usage_date DESC"
+      ]
+    },
+    {
+      "name": "ds_pipeline_by_user",
+      "displayName": "Pipeline by User",
+      "queryLines": [
+        "SELECT * FROM finops.pipeline_by_user"
+      ]
+    },
+    {
+      "name": "ds_pipeline_run_frequency",
+      "displayName": "Pipeline Run Frequency",
+      "queryLines": [
+        "SELECT * FROM finops.pipeline_run_frequency"
+      ]
+    },
+    {
+      "name": "ds_pipeline_runtime",
+      "displayName": "Pipeline Runtime",
+      "queryLines": [
+        "SELECT * FROM finops.pipeline_runtime"
+      ]
+    },
+    {
+      "name": "ds_top10_jobs",
+      "displayName": "Top 10 Jobs",
+      "queryLines": [
+        "SELECT * FROM finops.top10_jobs"
+      ]
+    },
+    {
+      "name": "ds_job_daily_cost",
+      "displayName": "Job Daily Cost",
+      "queryLines": [
+        "SELECT * FROM finops.job_daily_cost ORDER BY usage_date DESC"
+      ]
+    },
+    {
+      "name": "ds_job_by_user",
+      "displayName": "Job by User",
+      "queryLines": [
+        "SELECT * FROM finops.job_by_user"
+      ]
+    },
+    {
+      "name": "ds_job_run_frequency",
+      "displayName": "Job Run Frequency",
+      "queryLines": [
+        "SELECT * FROM finops.job_run_frequency"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "page_exec_overview",
+      "displayName": "Executive Overview",
+      "layout": [
+        {
+          "widget": {
+            "name": "f_date_range",
+            "queries": [
+              {
+                "name": "q_ds_cost_trend_usage_date",
+                "query": {
+                  "datasetName": "ds_cost_trend",
+                  "fields": [
+                    {
+                      "name": "usage_date",
+                      "expression": "`usage_date`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "usage_date",
+                    "displayName": "Usage Date",
+                    "queryName": "q_ds_cost_trend_usage_date"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_today",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_today_spend_gbp",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "today_spend_gbp",
+                      "expression": "`today_spend_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "today_spend_gbp",
+                  "displayName": "Today Spend (GBP)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Today Spend (GBP)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_weekly",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_weekly_spend_gbp",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "weekly_spend_gbp",
+                      "expression": "`weekly_spend_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "weekly_spend_gbp",
+                  "displayName": "Weekly Spend (GBP)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Weekly Spend (GBP)"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 3,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_monthly",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_monthly_spend_gbp",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "monthly_spend_gbp",
+                      "expression": "`monthly_spend_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "monthly_spend_gbp",
+                  "displayName": "Monthly Spend (GBP)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Monthly Spend (GBP)"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 3,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_total",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_total_spend_gbp",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "total_spend_gbp",
+                      "expression": "`total_spend_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total_spend_gbp",
+                  "displayName": "Total Spend (GBP)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Spend (GBP)"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 3,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_workspaces",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_total_workspaces",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "total_workspaces",
+                      "expression": "`total_workspaces`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total_workspaces",
+                  "displayName": "Total Workspaces"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Workspaces"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_pipelines",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_total_pipelines",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "total_pipelines",
+                      "expression": "`total_pipelines`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total_pipelines",
+                  "displayName": "Total Pipelines"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Pipelines"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 6,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_jobs",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_total_jobs",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "total_jobs",
+                      "expression": "`total_jobs`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total_jobs",
+                  "displayName": "Total Jobs"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Jobs"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 6,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "c_users",
+            "queries": [
+              {
+                "name": "q_ds_exec_summary_total_users",
+                "query": {
+                  "datasetName": "ds_exec_summary",
+                  "fields": [
+                    {
+                      "name": "total_users",
+                      "expression": "`total_users`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total_users",
+                  "displayName": "Total Users"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Users"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 6,
+            "width": 1,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "l_daily_cost",
+            "queries": [
+              {
+                "name": "q_ds_cost_trend_usage_date_daily_cost",
+                "query": {
+                  "datasetName": "ds_cost_trend",
+                  "fields": [
+                    {
+                      "name": "usage_date",
+                      "expression": "`usage_date`"
+                    },
+                    {
+                      "name": "daily_cost",
+                      "expression": "`daily_cost`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "usage_date",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "usage_date"
+                },
+                "y": {
+                  "fieldName": "daily_cost",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "daily_cost"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Daily Cost (GBP)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "l_cumulative_trend",
+            "queries": [
+              {
+                "name": "q_ds_cost_trend_usage_date_running_total",
+                "query": {
+                  "datasetName": "ds_cost_trend",
+                  "fields": [
+                    {
+                      "name": "usage_date",
+                      "expression": "`usage_date`"
+                    },
+                    {
+                      "name": "running_total",
+                      "expression": "`running_total`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "usage_date",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "usage_date"
+                },
+                "y": {
+                  "fieldName": "running_total",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "running_total"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cumulative Spend Trend (GBP)"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 9,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "b_monthly_cost",
+            "queries": [
+              {
+                "name": "q_ds_monthly_cost_reporting_month_monthly_cost_gbp",
+                "query": {
+                  "datasetName": "ds_monthly_cost",
+                  "fields": [
+                    {
+                      "name": "reporting_month",
+                      "expression": "`reporting_month`"
+                    },
+                    {
+                      "name": "monthly_cost_gbp",
+                      "expression": "`monthly_cost_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "reporting_month",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Month"
+                },
+                "y": {
+                  "fieldName": "monthly_cost_gbp",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Cost (GBP)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Monthly Cost (GBP)"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 9,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "t_budget_vs_actual",
+            "queries": [
+              {
+                "name": "q_ds_budget_vs_actual_budget_month_budget_gbp_actual_cost_gbp_remaining_budget_gbp_pct_of_budget_used",
+                "query": {
+                  "datasetName": "ds_budget_vs_actual",
+                  "fields": [
+                    {
+                      "name": "budget_month",
+                      "expression": "`budget_month`"
+                    },
+                    {
+                      "name": "budget_gbp",
+                      "expression": "`budget_gbp`"
+                    },
+                    {
+                      "name": "actual_cost_gbp",
+                      "expression": "`actual_cost_gbp`"
+                    },
+                    {
+                      "name": "remaining_budget_gbp",
+                      "expression": "`remaining_budget_gbp`"
+                    },
+                    {
+                      "name": "pct_of_budget_used",
+                      "expression": "`pct_of_budget_used`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "budget_month",
+                    "displayName": "Month",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "budget_gbp",
+                    "displayName": "Budget (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "actual_cost_gbp",
+                    "displayName": "Actual (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "remaining_budget_gbp",
+                    "displayName": "Remaining (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "pct_of_budget_used",
+                    "displayName": "% Used",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Budget vs Actual"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 15,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "page_pipeline_efficiency",
+      "displayName": "Data Engineering: Pipelines",
+      "layout": [
+        {
+          "widget": {
+            "name": "f_pipeline_id",
+            "queries": [
+              {
+                "name": "q_ds_pipeline_daily_cost_pipeline_id",
+                "query": {
+                  "datasetName": "ds_pipeline_daily_cost",
+                  "fields": [
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              },
+              {
+                "name": "q_ds_pipeline_by_user_pipeline_id",
+                "query": {
+                  "datasetName": "ds_pipeline_by_user",
+                  "fields": [
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              },
+              {
+                "name": "q_ds_pipeline_run_frequency_pipeline_id",
+                "query": {
+                  "datasetName": "ds_pipeline_run_frequency",
+                  "fields": [
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              },
+              {
+                "name": "q_ds_pipeline_runtime_pipeline_id",
+                "query": {
+                  "datasetName": "ds_pipeline_runtime",
+                  "fields": [
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "queryName": "q_ds_pipeline_daily_cost_pipeline_id"
+                  },
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "queryName": "q_ds_pipeline_by_user_pipeline_id"
+                  },
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "queryName": "q_ds_pipeline_run_frequency_pipeline_id"
+                  },
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "queryName": "q_ds_pipeline_runtime_pipeline_id"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "f_pipeline_user",
+            "queries": [
+              {
+                "name": "q_ds_pipeline_by_user_user_name",
+                "query": {
+                  "datasetName": "ds_pipeline_by_user",
+                  "fields": [
+                    {
+                      "name": "user_name",
+                      "expression": "`user_name`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "user_name",
+                    "displayName": "User",
+                    "queryName": "q_ds_pipeline_by_user_user_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "b_top10_pipelines",
+            "queries": [
+              {
+                "name": "q_ds_top10_pipelines_pipeline_id_total_cost_gbp",
+                "query": {
+                  "datasetName": "ds_top10_pipelines",
+                  "fields": [
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    },
+                    {
+                      "name": "total_cost_gbp",
+                      "expression": "`total_cost_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "pipeline_id",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Pipeline"
+                },
+                "y": {
+                  "fieldName": "total_cost_gbp",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Total Cost (GBP)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Top 10 Most Expensive Pipelines"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "t_pipeline_run_frequency",
+            "queries": [
+              {
+                "name": "q_ds_pipeline_run_frequency_pipeline_id_avg_runs_per_day_max_runs_in_a_day_total_runs_avg_cost_per_run_gbp_avg_daily_cos",
+                "query": {
+                  "datasetName": "ds_pipeline_run_frequency",
+                  "fields": [
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    },
+                    {
+                      "name": "avg_runs_per_day",
+                      "expression": "`avg_runs_per_day`"
+                    },
+                    {
+                      "name": "max_runs_in_a_day",
+                      "expression": "`max_runs_in_a_day`"
+                    },
+                    {
+                      "name": "total_runs",
+                      "expression": "`total_runs`"
+                    },
+                    {
+                      "name": "avg_cost_per_run_gbp",
+                      "expression": "`avg_cost_per_run_gbp`"
+                    },
+                    {
+                      "name": "avg_daily_cost_gbp",
+                      "expression": "`avg_daily_cost_gbp`"
+                    },
+                    {
+                      "name": "annual_cost_per_daily_run_gbp",
+                      "expression": "`annual_cost_per_daily_run_gbp`"
+                    },
+                    {
+                      "name": "total_cost_gbp",
+                      "expression": "`total_cost_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "avg_runs_per_day",
+                    "displayName": "Avg Runs/Day",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "max_runs_in_a_day",
+                    "displayName": "Max Runs/Day",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "total_runs",
+                    "displayName": "Total Runs",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "avg_cost_per_run_gbp",
+                    "displayName": "Avg Cost/Run (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "avg_daily_cost_gbp",
+                    "displayName": "Avg Daily Cost (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "annual_cost_per_daily_run_gbp",
+                    "displayName": "Annual Cost per Daily Run (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "total_cost_gbp",
+                    "displayName": "Total Cost (GBP)",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Pipeline Run Frequency vs Cost (how often it runs, and what each run costs)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "t_pipeline_daily_cost",
+            "queries": [
+              {
+                "name": "q_ds_pipeline_daily_cost_usage_date_pipeline_id_runs_daily_cost_gbp_average_run_cost",
+                "query": {
+                  "datasetName": "ds_pipeline_daily_cost",
+                  "fields": [
+                    {
+                      "name": "usage_date",
+                      "expression": "`usage_date`"
+                    },
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    },
+                    {
+                      "name": "runs",
+                      "expression": "`runs`"
+                    },
+                    {
+                      "name": "daily_cost_gbp",
+                      "expression": "`daily_cost_gbp`"
+                    },
+                    {
+                      "name": "average_run_cost",
+                      "expression": "`average_run_cost`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "usage_date",
+                    "displayName": "Date",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "runs",
+                    "displayName": "Runs",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "daily_cost_gbp",
+                    "displayName": "Daily Cost (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "average_run_cost",
+                    "displayName": "Avg Run Cost (GBP)",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Pipeline Daily Cost Detail"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 17,
+            "width": 3,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "t_pipeline_by_user",
+            "queries": [
+              {
+                "name": "q_ds_pipeline_by_user_user_name_pipeline_id_executions_total_cost_gbp_average_execution_cost",
+                "query": {
+                  "datasetName": "ds_pipeline_by_user",
+                  "fields": [
+                    {
+                      "name": "user_name",
+                      "expression": "`user_name`"
+                    },
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    },
+                    {
+                      "name": "executions",
+                      "expression": "`executions`"
+                    },
+                    {
+                      "name": "total_cost_gbp",
+                      "expression": "`total_cost_gbp`"
+                    },
+                    {
+                      "name": "average_execution_cost",
+                      "expression": "`average_execution_cost`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "user_name",
+                    "displayName": "User",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "executions",
+                    "displayName": "Executions",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "total_cost_gbp",
+                    "displayName": "Total Cost (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "average_execution_cost",
+                    "displayName": "Avg Cost/Execution (GBP)",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Pipeline Cost by User"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 17,
+            "width": 3,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "t_pipeline_runtime",
+            "queries": [
+              {
+                "name": "q_ds_pipeline_runtime_pipeline_id_executions_average_runtime_minutes_maximum_runtime_minutes",
+                "query": {
+                  "datasetName": "ds_pipeline_runtime",
+                  "fields": [
+                    {
+                      "name": "pipeline_id",
+                      "expression": "`pipeline_id`"
+                    },
+                    {
+                      "name": "executions",
+                      "expression": "`executions`"
+                    },
+                    {
+                      "name": "average_runtime_minutes",
+                      "expression": "`average_runtime_minutes`"
+                    },
+                    {
+                      "name": "maximum_runtime_minutes",
+                      "expression": "`maximum_runtime_minutes`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "pipeline_id",
+                    "displayName": "Pipeline",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "executions",
+                    "displayName": "Executions",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "average_runtime_minutes",
+                    "displayName": "Avg Runtime (min)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "maximum_runtime_minutes",
+                    "displayName": "Max Runtime (min)",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Estimated Pipeline Runtime (from billing timestamps)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 25,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "page_job_efficiency",
+      "displayName": "Data Engineering: Jobs",
+      "layout": [
+        {
+          "widget": {
+            "name": "f_job_id",
+            "queries": [
+              {
+                "name": "q_ds_job_daily_cost_job_id",
+                "query": {
+                  "datasetName": "ds_job_daily_cost",
+                  "fields": [
+                    {
+                      "name": "job_id",
+                      "expression": "`job_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              },
+              {
+                "name": "q_ds_job_by_user_job_id",
+                "query": {
+                  "datasetName": "ds_job_by_user",
+                  "fields": [
+                    {
+                      "name": "job_id",
+                      "expression": "`job_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              },
+              {
+                "name": "q_ds_job_run_frequency_job_id",
+                "query": {
+                  "datasetName": "ds_job_run_frequency",
+                  "fields": [
+                    {
+                      "name": "job_id",
+                      "expression": "`job_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "job_id",
+                    "displayName": "Job",
+                    "queryName": "q_ds_job_daily_cost_job_id"
+                  },
+                  {
+                    "fieldName": "job_id",
+                    "displayName": "Job",
+                    "queryName": "q_ds_job_by_user_job_id"
+                  },
+                  {
+                    "fieldName": "job_id",
+                    "displayName": "Job",
+                    "queryName": "q_ds_job_run_frequency_job_id"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "f_job_user",
+            "queries": [
+              {
+                "name": "q_ds_job_by_user_user_name",
+                "query": {
+                  "datasetName": "ds_job_by_user",
+                  "fields": [
+                    {
+                      "name": "user_name",
+                      "expression": "`user_name`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "user_name",
+                    "displayName": "User",
+                    "queryName": "q_ds_job_by_user_user_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 0,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "b_top10_jobs",
+            "queries": [
+              {
+                "name": "q_ds_top10_jobs_job_id_total_cost_gbp",
+                "query": {
+                  "datasetName": "ds_top10_jobs",
+                  "fields": [
+                    {
+                      "name": "job_id",
+                      "expression": "`job_id`"
+                    },
+                    {
+                      "name": "total_cost_gbp",
+                      "expression": "`total_cost_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "job_id",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Job"
+                },
+                "y": {
+                  "fieldName": "total_cost_gbp",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Total Cost (GBP)"
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Top 10 Most Expensive Jobs"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "t_job_run_frequency",
+            "queries": [
+              {
+                "name": "q_ds_job_run_frequency_job_id_avg_runs_per_day_max_runs_in_a_day_total_runs_avg_cost_per_run_gbp_avg_daily_cost_gbp_annu",
+                "query": {
+                  "datasetName": "ds_job_run_frequency",
+                  "fields": [
+                    {
+                      "name": "job_id",
+                      "expression": "`job_id`"
+                    },
+                    {
+                      "name": "avg_runs_per_day",
+                      "expression": "`avg_runs_per_day`"
+                    },
+                    {
+                      "name": "max_runs_in_a_day",
+                      "expression": "`max_runs_in_a_day`"
+                    },
+                    {
+                      "name": "total_runs",
+                      "expression": "`total_runs`"
+                    },
+                    {
+                      "name": "avg_cost_per_run_gbp",
+                      "expression": "`avg_cost_per_run_gbp`"
+                    },
+                    {
+                      "name": "avg_daily_cost_gbp",
+                      "expression": "`avg_daily_cost_gbp`"
+                    },
+                    {
+                      "name": "annual_cost_per_daily_run_gbp",
+                      "expression": "`annual_cost_per_daily_run_gbp`"
+                    },
+                    {
+                      "name": "total_cost_gbp",
+                      "expression": "`total_cost_gbp`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "job_id",
+                    "displayName": "Job",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "avg_runs_per_day",
+                    "displayName": "Avg Runs/Day",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "max_runs_in_a_day",
+                    "displayName": "Max Runs/Day",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "total_runs",
+                    "displayName": "Total Runs",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "avg_cost_per_run_gbp",
+                    "displayName": "Avg Cost/Run (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "avg_daily_cost_gbp",
+                    "displayName": "Avg Daily Cost (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "annual_cost_per_daily_run_gbp",
+                    "displayName": "Annual Cost per Daily Run (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "total_cost_gbp",
+                    "displayName": "Total Cost (GBP)",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Job Run Frequency vs Cost (how often it runs, and what each run costs)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "t_job_daily_cost",
+            "queries": [
+              {
+                "name": "q_ds_job_daily_cost_usage_date_job_id_runs_daily_cost_gbp_average_run_cost",
+                "query": {
+                  "datasetName": "ds_job_daily_cost",
+                  "fields": [
+                    {
+                      "name": "usage_date",
+                      "expression": "`usage_date`"
+                    },
+                    {
+                      "name": "job_id",
+                      "expression": "`job_id`"
+                    },
+                    {
+                      "name": "runs",
+                      "expression": "`runs`"
+                    },
+                    {
+                      "name": "daily_cost_gbp",
+                      "expression": "`daily_cost_gbp`"
+                    },
+                    {
+                      "name": "average_run_cost",
+                      "expression": "`average_run_cost`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "usage_date",
+                    "displayName": "Date",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "job_id",
+                    "displayName": "Job",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "runs",
+                    "displayName": "Runs",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "daily_cost_gbp",
+                    "displayName": "Daily Cost (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "average_run_cost",
+                    "displayName": "Avg Run Cost (GBP)",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Job Daily Cost Detail"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 17,
+            "width": 3,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "t_job_by_user",
+            "queries": [
+              {
+                "name": "q_ds_job_by_user_user_name_job_id_executions_total_cost_gbp_average_execution_cost",
+                "query": {
+                  "datasetName": "ds_job_by_user",
+                  "fields": [
+                    {
+                      "name": "user_name",
+                      "expression": "`user_name`"
+                    },
+                    {
+                      "name": "job_id",
+                      "expression": "`job_id`"
+                    },
+                    {
+                      "name": "executions",
+                      "expression": "`executions`"
+                    },
+                    {
+                      "name": "total_cost_gbp",
+                      "expression": "`total_cost_gbp`"
+                    },
+                    {
+                      "name": "average_execution_cost",
+                      "expression": "`average_execution_cost`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "user_name",
+                    "displayName": "User",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "job_id",
+                    "displayName": "Job",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "executions",
+                    "displayName": "Executions",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "total_cost_gbp",
+                    "displayName": "Total Cost (GBP)",
+                    "visible": true
+                  },
+                  {
+                    "fieldName": "average_execution_cost",
+                    "displayName": "Avg Cost/Execution (GBP)",
+                    "visible": true
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Job Cost by User"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 17,
+            "width": 3,
+            "height": 8
+          }
+        }
+      ]
+    }
+  ]
+}

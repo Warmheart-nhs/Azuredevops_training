@@ -1,0 +1,31 @@
+command: ["streamlit", "run", "app.py"]
+
+# ------------------------------------------------------------------------
+# Resources this app needs. Declare them here, then in the Databricks Apps
+# UI (Settings -> App resources) grant the app's service principal access
+# to the real SQL warehouse and the secret scope/key that back these names.
+#
+# The exact resource block syntax evolves between Databricks Apps releases —
+# treat the block below as a starting point and confirm field names against
+# your workspace's current "Add resource" dialog / `databricks apps` CLI
+# help before deploying.
+# ------------------------------------------------------------------------
+resources:
+  - name: "finops-warehouse"
+    description: "SQL Warehouse serving the finops schema"
+    sql_warehouse:
+      id: "REPLACE_WITH_YOUR_WAREHOUSE_ID"
+      permission: "CAN_USE"
+
+  - name: "anthropic-api-key"
+    description: "Anthropic API key for the NL cost Q&A agent"
+    secret:
+      scope: "finops"
+      key: "anthropic_api_key"
+      permission: "READ"
+
+env:
+  - name: "DATABRICKS_WAREHOUSE_ID"
+    valueFrom: "finops-warehouse"
+  - name: "ANTHROPIC_API_KEY"
+    valueFrom: "anthropic-api-key"

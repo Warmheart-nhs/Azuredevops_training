@@ -1,0 +1,651 @@
+<style>
+  .fo-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page-plane:     #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-blue:    #2a78d6;
+    --series-orange:  #eb6834;
+    --series-aqua:    #1baf7a;
+    --series-yellow:  #eda100;
+    --status-good:    #0ca30c;
+    --status-warning: #fab219;
+    --status-critical:#d03b3b;
+    --chip-bg:        #f0efec;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page-plane);
+    color: var(--text-primary);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .fo-root {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page-plane:     #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-blue:    #3987e5;
+      --series-orange:  #d95926;
+      --series-aqua:    #199e70;
+      --series-yellow:  #c98500;
+      --chip-bg:        #232320;
+    }
+  }
+  :root[data-theme="dark"] .fo-root {
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page-plane:     #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-blue:    #3987e5;
+    --series-orange:  #d95926;
+    --series-aqua:    #199e70;
+    --series-yellow:  #c98500;
+    --chip-bg:        #232320;
+  }
+
+  .fo-root * { box-sizing: border-box; }
+  .fo-root { min-height: 100%; }
+
+  .fo-banner {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px;
+    background: var(--chip-bg);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .fo-banner .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--series-orange); flex: none; }
+  .fo-banner b { color: var(--text-primary); }
+
+  .fo-topbar {
+    padding: 20px 24px 0;
+  }
+  .fo-topbar h1 { font-size: 20px; font-weight: 650; margin: 0 0 2px; letter-spacing: -0.01em; }
+  .fo-topbar p { margin: 0 0 16px; font-size: 13px; color: var(--text-secondary); }
+
+  .fo-tabs {
+    display: flex; gap: 4px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .fo-tab {
+    appearance: none; border: none; background: none; cursor: pointer;
+    font: inherit; font-size: 13.5px; font-weight: 560;
+    color: var(--text-secondary);
+    padding: 9px 14px 11px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .fo-tab.active { color: var(--text-primary); border-bottom-color: var(--series-blue); }
+  .fo-tab:hover:not(.active) { color: var(--text-primary); }
+
+  .fo-page { display: none; padding: 18px 24px 40px; }
+  .fo-page.active { display: block; }
+
+  .fo-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 12px; }
+  .fo-span-1 { grid-column: span 1; }
+  .fo-span-2 { grid-column: span 2; }
+  .fo-span-3 { grid-column: span 3; }
+  .fo-span-6 { grid-column: span 6; }
+
+  .fo-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .fo-card-title {
+    font-size: 12px; font-weight: 620; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.03em;
+    margin: 0 0 10px;
+  }
+
+  .fo-counter-label { font-size: 11.5px; color: var(--text-muted); margin: 0 0 6px; }
+  .fo-counter-value { font-size: 26px; font-weight: 650; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+  .fo-filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .fo-filter label { display: block; font-size: 10.5px; color: var(--text-muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .fo-filter select {
+    font: inherit; font-size: 13px; color: var(--text-primary);
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; min-width: 190px; cursor: pointer;
+  }
+
+  .fo-table-wrap { overflow-x: auto; }
+  table.fo-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.fo-table th {
+    text-align: left; font-weight: 600; color: var(--text-muted);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.02em;
+    padding: 0 10px 8px; border-bottom: 1px solid var(--gridline);
+    white-space: nowrap;
+  }
+  table.fo-table td {
+    padding: 7px 10px; border-bottom: 1px solid var(--gridline);
+    color: var(--text-primary); white-space: nowrap;
+  }
+  table.fo-table tr:last-child td { border-bottom: none; }
+  table.fo-table td.num, table.fo-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.fo-table tbody tr:hover { background: var(--chip-bg); }
+
+  .fo-pill {
+    display: inline-block; padding: 2px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 600;
+  }
+  .fo-pill.good { background: color-mix(in srgb, var(--status-good) 16%, transparent); color: var(--status-good); }
+  .fo-pill.warn { background: color-mix(in srgb, var(--status-warning) 22%, transparent); color: #96650d; }
+  .fo-pill.crit { background: color-mix(in srgb, var(--status-critical) 16%, transparent); color: var(--status-critical); }
+  :root[data-theme="dark"] .fo-pill.warn, @media (prefers-color-scheme: dark) { }
+  .fo-pill.warn { color: var(--status-warning); }
+
+  .fo-chart-svg { width: 100%; height: auto; display: block; }
+  .fo-axis-label { font-size: 10px; fill: var(--text-muted); }
+  .fo-gridline { stroke: var(--gridline); stroke-width: 1; }
+  .fo-baseline { stroke: var(--baseline); stroke-width: 1; }
+
+  .fo-tooltip {
+    position: fixed; pointer-events: none; z-index: 50;
+    background: var(--text-primary); color: var(--page-plane);
+    font-size: 11.5px; padding: 6px 9px; border-radius: 6px;
+    opacity: 0; transform: translate(-50%, -130%); transition: opacity 0.08s;
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+  }
+  .fo-tooltip.show { opacity: 1; }
+
+  .fo-note { font-size: 11.5px; color: var(--text-muted); margin: 8px 2px 0; }
+  .fo-callout {
+    font-size: 12px; color: var(--text-secondary); margin: 0 0 12px;
+    padding: 8px 12px; background: var(--chip-bg); border-radius: 6px;
+    border-left: 3px solid var(--series-orange);
+  }
+</style>
+
+<div class="fo-root">
+  <div class="fo-banner">
+    <span class="dot"></span>
+    <span><b>Design preview</b> — this is a mockup of <code>finops_dashboard.lvdash.json</code> with representative sample data, not a live Databricks connection. Layout mirrors the real widget positions exactly, so review it for what to change before importing.</span>
+  </div>
+
+  <div class="fo-topbar">
+    <h1>Azure Databricks FinOps Dashboard</h1>
+    <p>Cost visibility for Azure Databricks — sourced from system.billing tables via the finops schema.</p>
+  </div>
+
+  <nav class="fo-tabs">
+    <button class="fo-tab active" data-page="exec">Executive Overview</button>
+    <button class="fo-tab" data-page="pipelines">Data Engineering: Pipelines</button>
+    <button class="fo-tab" data-page="jobs">Data Engineering: Jobs</button>
+  </nav>
+
+  <!-- ================= PAGE 1: EXECUTIVE OVERVIEW ================= -->
+  <section class="fo-page active" id="page-exec">
+    <div class="fo-row">
+      <div class="fo-span-2 fo-card">
+        <div class="fo-filters">
+          <div class="fo-filter">
+            <label>Usage date range</label>
+            <select disabled><option>Last 30 days</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Today Spend (GBP)</p><div class="fo-counter-value">£312.40</div></div>
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Weekly Spend (GBP)</p><div class="fo-counter-value">£2,184.75</div></div>
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Monthly Spend (GBP)</p><div class="fo-counter-value">£9,840.10</div></div>
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Total Spend (GBP)</p><div class="fo-counter-value">£28,920.55</div></div>
+    </div>
+    <div class="fo-row">
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Total Workspaces</p><div class="fo-counter-value">4</div></div>
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Total Pipelines</p><div class="fo-counter-value">8</div></div>
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Total Jobs</p><div class="fo-counter-value">8</div></div>
+      <div class="fo-span-1 fo-card"><p class="fo-counter-label">Total Users</p><div class="fo-counter-value">13</div></div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-2 fo-card">
+        <p class="fo-card-title">Daily Cost (GBP)</p>
+        <div id="chart-daily-cost"></div>
+      </div>
+      <div class="fo-span-2 fo-card">
+        <p class="fo-card-title">Cumulative Spend Trend (GBP)</p>
+        <div id="chart-cumulative"></div>
+      </div>
+      <div class="fo-span-2 fo-card">
+        <p class="fo-card-title">Monthly Cost (GBP)</p>
+        <div id="chart-monthly-cost"></div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-6 fo-card">
+        <p class="fo-card-title">Budget vs Actual</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-budget"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 2: PIPELINES ================= -->
+  <section class="fo-page" id="page-pipelines">
+    <div class="fo-row">
+      <div class="fo-span-2 fo-card">
+        <div class="fo-filters">
+          <div class="fo-filter">
+            <label>Pipeline</label>
+            <select id="filter-pipeline"></select>
+          </div>
+        </div>
+      </div>
+      <div class="fo-span-2 fo-card">
+        <div class="fo-filters">
+          <div class="fo-filter">
+            <label>User</label>
+            <select id="filter-pipeline-user"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-6 fo-card">
+        <p class="fo-card-title">Top 10 Most Expensive Pipelines</p>
+        <div id="chart-top-pipelines"></div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-6 fo-card">
+        <p class="fo-card-title">Pipeline Run Frequency vs Cost</p>
+        <p class="fo-callout">This is the table engineers use to decide whether a pipeline needs to run as often as it does: <b>Annual Cost / Daily Run</b> is what keeping one run/day in the schedule costs over a year — multiply it by the runs you'd cut to estimate the saving.</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-pipeline-frequency"></table></div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-3 fo-card">
+        <p class="fo-card-title">Pipeline Daily Cost Detail</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-pipeline-daily"></table></div>
+      </div>
+      <div class="fo-span-3 fo-card">
+        <p class="fo-card-title">Pipeline Cost by User</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-pipeline-user"></table></div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-6 fo-card">
+        <p class="fo-card-title">Estimated Pipeline Runtime</p>
+        <p class="fo-note">Estimated from billing timestamps — not an official runtime metric.</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-pipeline-runtime"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PAGE 3: JOBS ================= -->
+  <section class="fo-page" id="page-jobs">
+    <div class="fo-row">
+      <div class="fo-span-2 fo-card">
+        <div class="fo-filters">
+          <div class="fo-filter">
+            <label>Job</label>
+            <select id="filter-job"></select>
+          </div>
+        </div>
+      </div>
+      <div class="fo-span-2 fo-card">
+        <div class="fo-filters">
+          <div class="fo-filter">
+            <label>User</label>
+            <select id="filter-job-user"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-6 fo-card">
+        <p class="fo-card-title">Top 10 Most Expensive Jobs</p>
+        <div id="chart-top-jobs"></div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-6 fo-card">
+        <p class="fo-card-title">Job Run Frequency vs Cost</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-job-frequency"></table></div>
+      </div>
+    </div>
+
+    <div class="fo-row">
+      <div class="fo-span-3 fo-card">
+        <p class="fo-card-title">Job Daily Cost Detail</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-job-daily"></table></div>
+      </div>
+      <div class="fo-span-3 fo-card">
+        <p class="fo-card-title">Job Cost by User</p>
+        <div class="fo-table-wrap"><table class="fo-table" id="table-job-user"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="fo-tooltip" id="fo-tooltip"></div>
+</div>
+
+<script>
+(function () {
+  const root = document.currentScript.previousElementSibling.closest ? document : document;
+  const tooltip = document.getElementById('fo-tooltip');
+  const gbp = (n) => '£' + Number(n).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const num = (n) => Number(n).toLocaleString('en-GB');
+
+  // ---------------- Tabs ----------------
+  document.querySelectorAll('.fo-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.fo-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.fo-page').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('page-' + tab.dataset.page).classList.add('active');
+    });
+  });
+
+  // ---------------- Sample data ----------------
+  const dailyCost = [210,225,195,340,365,390,410,380,355,205,220,330,375,400,420,395,215,230,345,360,385,405,430,225,240,350,370,395,415,440];
+  let running = 0;
+  const cumulative = dailyCost.map(v => (running += v));
+
+  const monthlyCost = [
+    { month: 'Feb 2026', value: 1450 },
+    { month: 'Mar 2026', value: 6200 },
+    { month: 'Apr 2026', value: 7100 },
+    { month: 'May 2026', value: 7950 },
+    { month: 'Jun 2026', value: 8700 },
+    { month: 'Jul 2026', value: 9840 },
+  ];
+
+  const budget = [
+    { month: '2026-07', budget: 10000.00, actual: 9840.10, remaining: 159.90, pct: 98.4 },
+    { month: '2026-06', budget: 9000.00, actual: 8700.00, remaining: 300.00, pct: 96.7 },
+    { month: '2026-05', budget: 9000.00, actual: 7950.00, remaining: 1050.00, pct: 88.3 },
+  ];
+
+  const pipelines = [
+    { id: 'pipe-clickstream-etl',   avgRuns: 24.0, maxRuns: 26,  totalRuns: 720,  costPerRun: 3.10,  dailyCost: 74.40, annualPerRun: 1131.50, total: 2232.00 },
+    { id: 'pipe-ingest-sales',      avgRuns: 12.0, maxRuns: 14,  totalRuns: 360,  costPerRun: 5.85,  dailyCost: 70.20, annualPerRun: 2135.25, total: 2106.00 },
+    { id: 'pipe-fraud-features',    avgRuns: 48.0, maxRuns: 50,  totalRuns: 1440, costPerRun: 1.20,  dailyCost: 57.60, annualPerRun: 438.00,  total: 1728.00 },
+    { id: 'pipe-realtime-alerts',   avgRuns: 96.0, maxRuns: 102, totalRuns: 2880, costPerRun: 0.42,  dailyCost: 40.32, annualPerRun: 153.30,  total: 1209.60 },
+    { id: 'pipe-ingest-crm',        avgRuns: 8.0,  maxRuns: 9,   totalRuns: 240,  costPerRun: 4.35,  dailyCost: 34.80, annualPerRun: 1587.75, total: 1044.00 },
+    { id: 'pipe-inventory-sync',    avgRuns: 4.0,  maxRuns: 4,   totalRuns: 120,  costPerRun: 8.40,  dailyCost: 33.60, annualPerRun: 3066.00, total: 1008.00 },
+    { id: 'pipe-marketing-attrib',  avgRuns: 2.0,  maxRuns: 2,   totalRuns: 60,   costPerRun: 14.75, dailyCost: 29.50, annualPerRun: 5383.75, total: 885.00 },
+    { id: 'pipe-customer360',       avgRuns: 1.0,  maxRuns: 1,   totalRuns: 30,   costPerRun: 22.10, dailyCost: 22.10, annualPerRun: 8066.50, total: 663.00 },
+  ];
+
+  const pipelineByUser = [
+    { user: 'a.kaur@corp.example',     pipeline: 'pipe-clickstream-etl',  exec: 720,  total: 2232.00, avg: 3.10 },
+    { user: 'm.chen@corp.example',     pipeline: 'pipe-ingest-sales',     exec: 360,  total: 2106.00, avg: 5.85 },
+    { user: 's.osei@corp.example',     pipeline: 'pipe-fraud-features',   exec: 1440, total: 1728.00, avg: 1.20 },
+    { user: 'svc-alerts@corp.example', pipeline: 'pipe-realtime-alerts',  exec: 2880, total: 1209.60, avg: 0.42 },
+    { user: 'j.novak@corp.example',    pipeline: 'pipe-ingest-crm',       exec: 240,  total: 1044.00, avg: 4.35 },
+    { user: 'r.silva@corp.example',    pipeline: 'pipe-inventory-sync',   exec: 120,  total: 1008.00, avg: 8.40 },
+    { user: 'l.tanaka@corp.example',   pipeline: 'pipe-marketing-attrib', exec: 60,   total: 885.00,  avg: 14.75 },
+    { user: 'a.kaur@corp.example',     pipeline: 'pipe-customer360',      exec: 30,   total: 663.00,  avg: 22.10 },
+  ];
+
+  const pipelineDaily = [
+    { date: '2026-07-29', pipeline: 'pipe-realtime-alerts',  runs: 96, cost: 40.32, avgRun: 0.42 },
+    { date: '2026-07-29', pipeline: 'pipe-fraud-features',   runs: 48, cost: 57.60, avgRun: 1.20 },
+    { date: '2026-07-29', pipeline: 'pipe-clickstream-etl',  runs: 24, cost: 74.40, avgRun: 3.10 },
+    { date: '2026-07-29', pipeline: 'pipe-ingest-sales',     runs: 12, cost: 70.20, avgRun: 5.85 },
+    { date: '2026-07-29', pipeline: 'pipe-ingest-crm',       runs: 8,  cost: 34.80, avgRun: 4.35 },
+    { date: '2026-07-29', pipeline: 'pipe-inventory-sync',   runs: 4,  cost: 33.60, avgRun: 8.40 },
+    { date: '2026-07-29', pipeline: 'pipe-marketing-attrib', runs: 2,  cost: 29.50, avgRun: 14.75 },
+    { date: '2026-07-29', pipeline: 'pipe-customer360',      runs: 1,  cost: 22.10, avgRun: 22.10 },
+  ];
+
+  const pipelineRuntime = [
+    { id: 'pipe-realtime-alerts',  exec: 2880, avgMin: 0.8,  maxMin: 2.1 },
+    { id: 'pipe-clickstream-etl',  exec: 720,  avgMin: 4.2,  maxMin: 9.5 },
+    { id: 'pipe-ingest-sales',     exec: 360,  avgMin: 6.5,  maxMin: 14.0 },
+    { id: 'pipe-fraud-features',   exec: 1440, avgMin: 1.5,  maxMin: 3.8 },
+    { id: 'pipe-inventory-sync',   exec: 120,  avgMin: 9.0,  maxMin: 16.2 },
+    { id: 'pipe-marketing-attrib', exec: 60,   avgMin: 12.4, maxMin: 20.1 },
+    { id: 'pipe-customer360',      exec: 30,   avgMin: 18.6, maxMin: 25.0 },
+    { id: 'pipe-ingest-crm',       exec: 240,  avgMin: 5.1,  maxMin: 11.3 },
+  ];
+
+  const jobs = [
+    { id: 'job-nightly-batch',       avgRuns: 1.0,  maxRuns: 1,  totalRuns: 30,   costPerRun: 45.00, dailyCost: 45.00, annualPerRun: 16425.00, total: 1350.00 },
+    { id: 'job-model-training',      avgRuns: 0.5,  maxRuns: 1,  totalRuns: 15,   costPerRun: 82.00, dailyCost: 41.00, annualPerRun: 29930.00, total: 1230.00 },
+    { id: 'job-ml-scoring',          avgRuns: 48.0, maxRuns: 52, totalRuns: 1440, costPerRun: 0.65,  dailyCost: 31.20, annualPerRun: 237.25,   total: 936.00 },
+    { id: 'job-adhoc-analytics',     avgRuns: 2.0,  maxRuns: 3,  totalRuns: 60,   costPerRun: 9.75,  dailyCost: 19.50, annualPerRun: 3558.75,  total: 585.00 },
+    { id: 'job-report-generation',   avgRuns: 3.0,  maxRuns: 4,  totalRuns: 90,   costPerRun: 6.20,  dailyCost: 18.60, annualPerRun: 2263.00,  total: 558.00 },
+    { id: 'job-backup-export',       avgRuns: 1.0,  maxRuns: 1,  totalRuns: 30,   costPerRun: 18.50, dailyCost: 18.50, annualPerRun: 6752.50,  total: 555.00 },
+    { id: 'job-data-quality-checks', avgRuns: 6.0,  maxRuns: 7,  totalRuns: 180,  costPerRun: 2.10,  dailyCost: 12.60, annualPerRun: 766.50,   total: 378.00 },
+    { id: 'job-currency-fx-update',  avgRuns: 24.0, maxRuns: 26, totalRuns: 720,  costPerRun: 0.35,  dailyCost: 8.40,  annualPerRun: 127.75,   total: 252.00 },
+  ];
+
+  const jobByUser = [
+    { user: 'svc-batch@corp.example',   job: 'job-nightly-batch',       exec: 30,   total: 1350.00, avg: 45.00 },
+    { user: 'd.silva@corp.example',     job: 'job-model-training',      exec: 15,   total: 1230.00, avg: 82.00 },
+    { user: 'svc-scoring@corp.example', job: 'job-ml-scoring',          exec: 1440, total: 936.00,  avg: 0.65 },
+    { user: 'k.osei@corp.example',      job: 'job-adhoc-analytics',     exec: 60,   total: 585.00,  avg: 9.75 },
+    { user: 'p.nguyen@corp.example',    job: 'job-report-generation',   exec: 90,   total: 558.00,  avg: 6.20 },
+    { user: 'r.silva@corp.example',     job: 'job-backup-export',       exec: 30,   total: 555.00,  avg: 18.50 },
+    { user: 'svc-dq@corp.example',      job: 'job-data-quality-checks', exec: 180,  total: 378.00,  avg: 2.10 },
+    { user: 'svc-fx@corp.example',      job: 'job-currency-fx-update',  exec: 720,  total: 252.00,  avg: 0.35 },
+  ];
+
+  const jobDaily = [
+    { date: '2026-07-29', job: 'job-ml-scoring',          runs: 48, cost: 31.20, avgRun: 0.65 },
+    { date: '2026-07-29', job: 'job-currency-fx-update',  runs: 24, cost: 8.40,  avgRun: 0.35 },
+    { date: '2026-07-29', job: 'job-data-quality-checks', runs: 6,  cost: 12.60, avgRun: 2.10 },
+    { date: '2026-07-29', job: 'job-report-generation',   runs: 3,  cost: 18.60, avgRun: 6.20 },
+    { date: '2026-07-29', job: 'job-adhoc-analytics',     runs: 2,  cost: 19.50, avgRun: 9.75 },
+    { date: '2026-07-29', job: 'job-nightly-batch',       runs: 1,  cost: 45.00, avgRun: 45.00 },
+    { date: '2026-07-29', job: 'job-backup-export',       runs: 1,  cost: 18.50, avgRun: 18.50 },
+  ];
+
+  // ---------------- Chart helpers ----------------
+  function css(varName) {
+    return getComputedStyle(document.querySelector('.fo-root')).getPropertyValue(varName).trim();
+  }
+
+  function lineChart(containerId, data, opts) {
+    const el = document.getElementById(containerId);
+    const w = 380, h = 170, padL = 40, padR = 12, padT = 10, padB = 22;
+    const innerW = w - padL - padR, innerH = h - padT - padB;
+    const max = Math.max(...data);
+    const min = 0;
+    const x = (i) => padL + (i / (data.length - 1)) * innerW;
+    const y = (v) => padT + innerH - ((v - min) / (max - min)) * innerH;
+    const points = data.map((v, i) => [x(i), y(v)]);
+    const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+    const areaPath = linePath + ` L ${x(data.length - 1).toFixed(1)} ${(padT + innerH).toFixed(1)} L ${x(0).toFixed(1)} ${(padT + innerH).toFixed(1)} Z`;
+    const color = opts.color || css('--series-blue');
+    const gridY = [0, 0.5, 1].map(f => padT + innerH * f);
+
+    let svg = `<svg class="fo-chart-svg" viewBox="0 0 ${w} ${h}">`;
+    gridY.forEach(gy => { svg += `<line class="fo-gridline" x1="${padL}" y1="${gy.toFixed(1)}" x2="${w - padR}" y2="${gy.toFixed(1)}"/>`; });
+    svg += `<line class="fo-baseline" x1="${padL}" y1="${(padT + innerH).toFixed(1)}" x2="${w - padR}" y2="${(padT + innerH).toFixed(1)}"/>`;
+    svg += `<path d="${areaPath}" fill="${color}" opacity="0.12" stroke="none"/>`;
+    svg += `<path d="${linePath}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const last = points[points.length - 1];
+    svg += `<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3.5" fill="${color}"/>`;
+    svg += `<text class="fo-axis-label" x="${padL}" y="${h - 4}">${data.length} days ago</text>`;
+    svg += `<text class="fo-axis-label" x="${w - padR}" y="${h - 4}" text-anchor="end">today</text>`;
+    svg += `<text class="fo-axis-label" x="4" y="${padT + 4}">${opts.fmt(max)}</text>`;
+    svg += `</svg>`;
+    el.innerHTML = svg;
+
+    const svgEl = el.querySelector('svg');
+    svgEl.addEventListener('mousemove', (e) => {
+      const rect = svgEl.getBoundingClientRect();
+      const relX = ((e.clientX - rect.left) / rect.width) * w;
+      let idx = Math.round(((relX - padL) / innerW) * (data.length - 1));
+      idx = Math.max(0, Math.min(data.length - 1, idx));
+      tooltip.textContent = opts.fmt(data[idx]);
+      tooltip.style.left = e.clientX + 'px';
+      tooltip.style.top = e.clientY + 'px';
+      tooltip.classList.add('show');
+    });
+    svgEl.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+  }
+
+  function barChart(containerId, items, opts) {
+    const el = document.getElementById(containerId);
+    const w = 900, h = 220, padL = 44, padR = 12, padT = 12, padB = 46;
+    const innerW = w - padL - padR, innerH = h - padT - padB;
+    const max = Math.max(...items.map(d => d.value));
+    const bw = innerW / items.length;
+    const barW = bw * 0.55;
+    const color = opts.color || css('--series-blue');
+    const y = (v) => padT + innerH - (v / max) * innerH;
+
+    let svg = `<svg class="fo-chart-svg" viewBox="0 0 ${w} ${h}">`;
+    [0, 0.5, 1].forEach(f => {
+      const gy = padT + innerH * f;
+      svg += `<line class="fo-gridline" x1="${padL}" y1="${gy.toFixed(1)}" x2="${w - padR}" y2="${gy.toFixed(1)}"/>`;
+    });
+    items.forEach((d, i) => {
+      const bx = padL + i * bw + (bw - barW) / 2;
+      const by = y(d.value);
+      const bh = (padT + innerH) - by;
+      svg += `<rect class="fo-bar" data-i="${i}" x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(bh,1).toFixed(1)}" rx="3" fill="${color}"/>`;
+      const label = d.label.length > 16 ? d.label.slice(0, 14) + '…' : d.label;
+      svg += `<text class="fo-axis-label" x="${(bx + barW / 2).toFixed(1)}" y="${h - padB + 14}" text-anchor="middle" transform="rotate(0)">${label}</text>`;
+    });
+    svg += `<line class="fo-baseline" x1="${padL}" y1="${(padT + innerH).toFixed(1)}" x2="${w - padR}" y2="${(padT + innerH).toFixed(1)}"/>`;
+    svg += `<text class="fo-axis-label" x="4" y="${padT + 4}">${opts.fmt(max)}</text>`;
+    svg += `</svg>`;
+    el.innerHTML = svg;
+
+    const svgEl = el.querySelector('svg');
+    svgEl.querySelectorAll('.fo-bar').forEach((bar) => {
+      bar.addEventListener('mousemove', (e) => {
+        const i = +bar.dataset.i;
+        tooltip.textContent = items[i].label + ': ' + opts.fmt(items[i].value);
+        tooltip.style.left = e.clientX + 'px';
+        tooltip.style.top = e.clientY + 'px';
+        tooltip.classList.add('show');
+      });
+      bar.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+    });
+  }
+
+  // ---------------- Render charts ----------------
+  lineChart('chart-daily-cost', dailyCost, { color: css('--series-blue'), fmt: v => gbp(v) });
+  lineChart('chart-cumulative', cumulative, { color: css('--series-orange'), fmt: v => gbp(v) });
+  barChart('chart-monthly-cost', monthlyCost.map(m => ({ label: m.month, value: m.value })), { color: css('--series-blue'), fmt: v => gbp(v) });
+  barChart('chart-top-pipelines', pipelines.map(p => ({ label: p.id.replace('pipe-', ''), value: p.total })), { color: css('--series-blue'), fmt: v => gbp(v) });
+  barChart('chart-top-jobs', jobs.map(j => ({ label: j.id.replace('job-', ''), value: j.total })), { color: css('--series-aqua'), fmt: v => gbp(v) });
+
+  // ---------------- Tables ----------------
+  function renderTable(id, headers, rows, numCols) {
+    const table = document.getElementById(id);
+    const thead = '<thead><tr>' + headers.map((h, i) => `<th class="${numCols.includes(i) ? 'num' : ''}">${h}</th>`).join('') + '</tr></thead>';
+    const tbody = '<tbody>' + rows.map(r => '<tr>' + r.map((c, i) => `<td class="${numCols.includes(i) ? 'num' : ''}">${c}</td>`).join('') + '</tr>').join('') + '</tbody>';
+    table.innerHTML = thead + tbody;
+  }
+
+  renderTable('table-budget',
+    ['Month', 'Budget (GBP)', 'Actual (GBP)', 'Remaining (GBP)', '% Used'],
+    budget.map(b => [b.month, gbp(b.budget), gbp(b.actual), gbp(b.remaining), `<span class="fo-pill ${b.pct >= 95 ? 'warn' : 'good'}">${b.pct}%</span>`]),
+    [1, 2, 3, 4]
+  );
+
+  function renderPipelineFrequency(filterId) {
+    const rows = pipelines.filter(p => filterId === 'all' || p.id === filterId);
+    renderTable('table-pipeline-frequency',
+      ['Pipeline', 'Avg Runs/Day', 'Max Runs/Day', 'Total Runs', 'Avg Cost/Run (GBP)', 'Avg Daily Cost (GBP)', 'Annual Cost/Daily Run (GBP)', 'Total Cost (GBP)'],
+      rows.map(p => [p.id, p.avgRuns.toFixed(1), p.maxRuns, num(p.totalRuns), gbp(p.costPerRun), gbp(p.dailyCost), gbp(p.annualPerRun), gbp(p.total)]),
+      [1, 2, 3, 4, 5, 6, 7]
+    );
+  }
+
+  function renderPipelineDaily(filterId) {
+    const rows = pipelineDaily.filter(d => filterId === 'all' || d.pipeline === filterId);
+    renderTable('table-pipeline-daily', ['Date', 'Pipeline', 'Runs', 'Daily Cost (GBP)', 'Avg Run Cost (GBP)'],
+      rows.map(d => [d.date, d.pipeline, d.runs, gbp(d.cost), gbp(d.avgRun)]), [2, 3, 4]);
+  }
+
+  function renderPipelineByUser(pipelineFilter, userFilter) {
+    const rows = pipelineByUser.filter(r => (pipelineFilter === 'all' || r.pipeline === pipelineFilter) && (userFilter === 'all' || r.user === userFilter));
+    renderTable('table-pipeline-user', ['User', 'Pipeline', 'Executions', 'Total Cost (GBP)', 'Avg Cost/Execution (GBP)'],
+      rows.map(r => [r.user, r.pipeline, num(r.exec), gbp(r.total), gbp(r.avg)]), [2, 3, 4]);
+  }
+
+  function renderPipelineRuntime(filterId) {
+    const rows = pipelineRuntime.filter(r => filterId === 'all' || r.id === filterId);
+    renderTable('table-pipeline-runtime', ['Pipeline', 'Executions', 'Avg Runtime (min)', 'Max Runtime (min)'],
+      rows.map(r => [r.id, num(r.exec), r.avgMin.toFixed(1), r.maxMin.toFixed(1)]), [1, 2, 3]);
+  }
+
+  function renderJobFrequency(filterId) {
+    const rows = jobs.filter(j => filterId === 'all' || j.id === filterId);
+    renderTable('table-job-frequency',
+      ['Job', 'Avg Runs/Day', 'Max Runs/Day', 'Total Runs', 'Avg Cost/Run (GBP)', 'Avg Daily Cost (GBP)', 'Annual Cost/Daily Run (GBP)', 'Total Cost (GBP)'],
+      rows.map(j => [j.id, j.avgRuns.toFixed(1), j.maxRuns, num(j.totalRuns), gbp(j.costPerRun), gbp(j.dailyCost), gbp(j.annualPerRun), gbp(j.total)]),
+      [1, 2, 3, 4, 5, 6, 7]
+    );
+  }
+
+  function renderJobDaily(filterId) {
+    const rows = jobDaily.filter(d => filterId === 'all' || d.job === filterId);
+    renderTable('table-job-daily', ['Date', 'Job', 'Runs', 'Daily Cost (GBP)', 'Avg Run Cost (GBP)'],
+      rows.map(d => [d.date, d.job, d.runs, gbp(d.cost), gbp(d.avgRun)]), [2, 3, 4]);
+  }
+
+  function renderJobByUser(jobFilter, userFilter) {
+    const rows = jobByUser.filter(r => (jobFilter === 'all' || r.job === jobFilter) && (userFilter === 'all' || r.user === userFilter));
+    renderTable('table-job-user', ['User', 'Job', 'Executions', 'Total Cost (GBP)', 'Avg Cost/Execution (GBP)'],
+      rows.map(r => [r.user, r.job, num(r.exec), gbp(r.total), gbp(r.avg)]), [2, 3, 4]);
+  }
+
+  // ---------------- Filters ----------------
+  function fillSelect(id, values, allLabel) {
+    const sel = document.getElementById(id);
+    sel.innerHTML = `<option value="all">${allLabel}</option>` + values.map(v => `<option value="${v}">${v}</option>`).join('');
+  }
+
+  fillSelect('filter-pipeline', pipelines.map(p => p.id), 'All Pipelines');
+  fillSelect('filter-pipeline-user', [...new Set(pipelineByUser.map(r => r.user))], 'All Users');
+  fillSelect('filter-job', jobs.map(j => j.id), 'All Jobs');
+  fillSelect('filter-job-user', [...new Set(jobByUser.map(r => r.user))], 'All Users');
+
+  function refreshPipelinePage() {
+    const p = document.getElementById('filter-pipeline').value;
+    const u = document.getElementById('filter-pipeline-user').value;
+    renderPipelineFrequency(p);
+    renderPipelineDaily(p);
+    renderPipelineByUser(p, u);
+    renderPipelineRuntime(p);
+  }
+  function refreshJobPage() {
+    const j = document.getElementById('filter-job').value;
+    const u = document.getElementById('filter-job-user').value;
+    renderJobFrequency(j);
+    renderJobDaily(j);
+    renderJobByUser(j, u);
+  }
+
+  document.getElementById('filter-pipeline').addEventListener('change', refreshPipelinePage);
+  document.getElementById('filter-pipeline-user').addEventListener('change', refreshPipelinePage);
+  document.getElementById('filter-job').addEventListener('change', refreshJobPage);
+  document.getElementById('filter-job-user').addEventListener('change', refreshJobPage);
+
+  refreshPipelinePage();
+  refreshJobPage();
+})();
+</script>
